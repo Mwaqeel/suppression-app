@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^3.91.0"
+  },
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public"
+  }
+}
