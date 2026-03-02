@@ -6,7 +6,7 @@
     {
       "binding": "DB",
       "database_name": "suppression-db",
-      "database_id": "PASTE_DB_ID_HERE",
+      "database_id": "6c73cea6-7b52-4687-af08-99bbee0d43a0",
       "migrations_dir": "./migrations"
     }
   ],
