@@ -1,4 +1,4 @@
-import { verify } from "./auth.js";
+import { verify, getTokenFromRequest } from "./auth.js";
 
 export async function onRequestPost(ctx) {
   const { request, env } = ctx;
@@ -26,7 +26,7 @@ export async function onRequestPost(ctx) {
 }
 
 async function getAuth(request, env) {
-  const token = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  const token = getTokenFromRequest(request);
   return token ? await verify(env, token) : null;
 }
 
