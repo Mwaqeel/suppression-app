@@ -1,11 +1,10 @@
-import { verify } from "./auth.js";
+import { verify, getTokenFromRequest } from "./auth.js";
 
 export async function onRequestPost(ctx) {
   const { request, env } = ctx;
   const auth = await getAuth(request, env);
   if (!auth || auth.role !== "admin") return json({ ok: false, error: "Unauthorized" }, 401);
 
-  // Accept text/plain (one per line) OR JSON {ids:[...]}
   const ct = request.headers.get("content-type") || "";
   let ids = [];
   if (ct.includes("application/json")) {
@@ -21,6 +20,7 @@ export async function onRequestPost(ctx) {
 
   const now = new Date().toISOString();
   const chunk = 800;
+
   for (let i = 0; i < cleaned.length; i += chunk) {
     const part = cleaned.slice(i, i + chunk);
     const placeholders = part.map(() => "(?, ?)").join(", ");
@@ -34,7 +34,7 @@ export async function onRequestPost(ctx) {
 }
 
 async function getAuth(request, env) {
-  const token = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  const token = getTokenFromRequest(request);
   return token ? await verify(env, token) : null;
 }
 
